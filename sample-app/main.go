@@ -3,5 +3,9 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("Hello, World!")
+	cfg, err := NewConfiguration()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(cfg.Server)
 }
