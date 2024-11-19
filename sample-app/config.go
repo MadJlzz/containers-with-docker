@@ -14,7 +14,7 @@ type AppConfiguration struct {
 }
 
 type ServerConfiguration struct {
-	Port int `yaml:"port"`
+	Hostname string `yaml:"hostname"`
 }
 
 func NewConfiguration() (*AppConfiguration, error) {
