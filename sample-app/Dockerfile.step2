@@ -1,0 +1,17 @@
+# docker build -t pokeapi .
+# docker container run --rm -v $(pwd)/configs:/app/configs -p 9000:8080 pokeapi
+FROM docker.io/golang:1.23 AS builder
+
+WORKDIR /builder
+
+COPY . .
+
+RUN CGO_ENABLED=0 go build -o pokeapi *.go
+
+FROM alpine:latest
+
+WORKDIR /app
+
+COPY --from=builder /builder/pokeapi .
+
+ENTRYPOINT ["./pokeapi"]

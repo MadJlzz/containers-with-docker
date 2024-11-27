@@ -1,0 +1,10 @@
+# docker build -t pokeapi .
+# docker container run --rm pokeapi
+FROM docker.io/golang:1.23
+
+WORKDIR /builder
+COPY . .
+
+RUN CGO_ENABLED=0 go build -o pokeapi *.go
+
+ENTRYPOINT ["./pokeapi"]

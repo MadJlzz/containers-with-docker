@@ -1,0 +1,21 @@
+# docker build -t pokeapi .
+# docker container run --rm -v $(pwd)/configs:/app/configs -p 9000:8080 pokeapi
+FROM docker.io/golang:1.23 AS builder
+
+WORKDIR /builder
+
+# We split the compilation and dependencie fetching to optimize docker build cache usage.
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY *.go .
+
+RUN CGO_ENABLED=0 go build -o pokeapi *.go
+
+FROM alpine:latest
+
+WORKDIR /app
+
+COPY --from=builder /builder/pokeapi .
+
+ENTRYPOINT ["./pokeapi"]
